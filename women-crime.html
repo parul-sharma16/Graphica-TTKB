@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case Statistics Chart</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #333; 
+            color: white; 
+        }
+        canvas {
+            margin-bottom: 40px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Case Statistics from 2020 to 2023</h1>
+
+<canvas id="totalCasesChart" width="800" height="400"></canvas>
+<canvas id="disposedCasesChart" width="800" height="400"></canvas>
+<canvas id="pendingCasesChart" width="800" height="400"></canvas>
+
+<script>
+    const data = {
+        "Sheet1": [
+            { "w": 2020, "State": "Delhi", "Total_Cases_Registered": 5000, "Total_Cases_Disposed": 4000, "Total_Cases_Pending": 1000 },
+            { "w": 2020, "State": "Maharashtra", "Total_Cases_Registered": 7000, "Total_Cases_Disposed": 6000, "Total_Cases_Pending": 1000 },
+            { "w": 2020, "State": "Karnataka", "Total_Cases_Registered": 4000, "Total_Cases_Disposed": 3500, "Total_Cases_Pending": 500 },
+            { "w": 2021, "State": "Delhi", "Total_Cases_Registered": 6000, "Total_Cases_Disposed": 4500, "Total_Cases_Pending": 1500 },
+            { "w": 2021, "State": "Maharashtra", "Total_Cases_Registered": 8000, "Total_Cases_Disposed": 7000, "Total_Cases_Pending": 1000 },
+            { "w": 2021, "State": "Karnataka", "Total_Cases_Registered": 4500, "Total_Cases_Disposed": 4000, "Total_Cases_Pending": 500 },
+            { "w": 2022, "State": "Delhi", "Total_Cases_Registered": 7000, "Total_Cases_Disposed": 5500, "Total_Cases_Pending": 1500 },
+            { "w": 2022, "State": "Maharashtra", "Total_Cases_Registered": 9000, "Total_Cases_Disposed": 7500, "Total_Cases_Pending": 1500 },
+            { "w": 2022, "State": "Karnataka", "Total_Cases_Registered": 5000, "Total_Cases_Disposed": 4500, "Total_Cases_Pending": 500 },
+            { "w": 2023, "State": "Delhi", "Total_Cases_Registered": 7500, "Total_Cases_Disposed": 7000, "Total_Cases_Pending": 500 },
+            { "w": 2023, "State": "Maharashtra", "Total_Cases_Registered": 10000, "Total_Cases_Disposed": 8500, "Total_Cases_Pending": 1500 },
+            { "w": 2023, "State": "Karnataka", "Total_Cases_Registered": 6000, "Total_Cases_Disposed": 5000, "Total_Cases_Pending": 1000 }
+        ]
+    };
+
+    const states = ["Delhi", "Maharashtra", "Karnataka"];
+    const years = [2020, 2021, 2022, 2023];
+
+    const totalCasesRegistered = states.map(state => {
+        return years.map(year => {
+            const record = data.Sheet1.find(r => r.State === state && r.w === year);
+            return record ? record.Total_Cases_Registered : 0;
+        });
+    });
+
+    const totalCasesDisposed = states.map(state => {
+        return years.map(year => {
+            const record = data.Sheet1.find(r => r.State === state && r.w === year);
+            return record ? record.Total_Cases_Disposed : 0;
+        });
+    });
+
+    const totalCasesPending = states.map(state => {
+        return years.map(year => {
+            const record = data.Sheet1.find(r => r.State === state && r.w === year);
+            return record ? record.Total_Cases_Pending : 0;
+        });
+    });
+
+    const createChart = (ctx, labels, data, title) => {
+        return new Chart(ctx, {
+            type: 'bar', 
+            data: {
+                labels: labels,
+                datasets: states.map((state, index) => ({
+                    label: state,
+                    data: data[index],
+                    backgroundColor: `hsl(${index * 120}, 70%, 50%)`, 
+                    borderWidth: 1
+                })),
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            color: 'white' 
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: title,
+                        color: 'white' 
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: 'white' 
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)' 
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: 'white' 
+                        }
+                    }
+                },
+                layout: {
+                    padding: 20
+                }
+            }
+        });
+    };
+
+    createChart(document.getElementById('totalCasesChart'), years, totalCasesRegistered, 'Total Cases Registered');
+    createChart(document.getElementById('disposedCasesChart'), years, totalCasesDisposed, 'Total Cases Disposed');
+    createChart(document.getElementById('pendingCasesChart'), years, totalCasesPending, 'Total Cases Pending');
+
+</script>
+
+</body>
+</html>

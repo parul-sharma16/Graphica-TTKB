@@ -5,14 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JusticeTracker</title>
     <link rel="stylesheet" href="styles.css">
-    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 600px;
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
     <nav>
         <ul>
             <li><a class="nav-bar" href="index.html">Home</a></li>
             <li><a class="nav-bar" href="about.html">About</a></li>
-            <li><a class="nav-bar" href="tracker.html">Tracker</a></li>
             <li><a class="nav-bar" href="reporting.html">Reporting</a></li>
             <li><a class="nav-bar" href="blog.html">Blog</a></li>
         </ul>
@@ -27,9 +32,78 @@
 <a href="https:&#x2F;&#x2F;www.canva.com&#x2F;design&#x2F;DAGTbOGiwrc&#x2F;eTi3uNLKeId-p0GJaQJ3ZQ&#x2F;view?utm_content=DAGTbOGiwrc&amp;utm_campaign=designshare&amp;utm_medium=embeds&amp;utm_source=link" target="_blank" rel="noopener"></a>
     <main>
         <h1>Welcome to JusticeTracker</h1>
-        <p>This website provides information about legal cases, methodology, and allows for crime reporting and tracking.</p>
+        <h4>This website provides information about legal cases, methodology, and allows for crime reporting and tracking.</h4>
+        <h4>The following is a citywise comprehensive display of the number of cases registered in the the most prominent category of crime:</h4>
     </main>
-    <footer>
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        var map = L.map('map').setView([20.5937, 78.9629], 5); 
+    
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+        }).addTo(map);
+    
+        var caseData = {
+            "crimeCategories": [
+                {
+                    "category": "Cybercrime",
+                    "cases": [
+                        { "caseID": "CY001", "city": "Delhi", "casesCount": 50, "lat": 28.7041, "lng": 77.1025 },
+                        { "caseID": "CY002", "city": "Mumbai", "casesCount": 35, "lat": 19.0760, "lng": 72.8777 },
+                        { "caseID": "CY003", "city": "Bangalore", "casesCount": 22, "lat": 12.9716, "lng": 77.5946 },
+                        { "caseID": "CY004", "city": "Hyderabad", "casesCount": 15, "lat": 17.3850, "lng": 78.4867 },
+                        { "caseID": "CY005", "city": "Pune", "casesCount": 26, "lat": 18.5204, "lng": 73.8567 }
+                    ]
+                },
+                {
+                    "category": "Crimes Against Women",
+                    "cases": [
+                        { "caseID": "CW001", "city": "Kolkata", "casesCount": 40, "lat": 22.5726, "lng": 88.3639 },
+                        { "caseID": "CW002", "city": "Chennai", "casesCount": 28, "lat": 13.0827, "lng": 80.2707 },
+                        { "caseID": "CW003", "city": "Ahmedabad", "casesCount": 20, "lat": 23.0225, "lng": 72.5714 },
+                        {"caseID": "CW004", "city": "Hyderabad", "casesCount": 30, "lat": 17.3850, "lng": 78.4867 }
+                    ]
+                },
+                {
+                    "category": "Assault",
+                    "cases": [
+                        { "caseID": "AS001", "city": "Lucknow", "casesCount": 30, "lat": 26.8467, "lng": 80.9462 },
+                        { "caseID": "AS002", "city": "Jaipur", "casesCount": 25, "lat": 26.9124, "lng": 75.7873 },
+                        { "caseID": "AS003", "city": "Bhopal", "casesCount": 20, "lat": 23.2599, "lng": 77.4126 },
+                        { "caseID": "AS004", "city": "Patna", "casesCount": 10, "lat": 25.5941, "lng": 85.1376 }
+                    ]
+                },
+                {
+                    "category": "Theft",
+                    "cases": [
+                        { "caseID": "TH001", "city": "Surat", "casesCount": 15, "lat": 21.1702, "lng": 72.8311 },
+                        { "caseID": "TH002", "city": "Kanpur", "casesCount": 12, "lat": 26.4478, "lng": 80.3463 },
+                        { "caseID": "TH003", "city": "Nashik", "casesCount": 8, "lat": 19.9975, "lng": 73.7898 },
+                        { "caseID": "TH004", "city": "Visakhapatnam", "casesCount": 5, "lat": 17.6868, "lng": 83.2185 }
+                    ]
+                }
+            ]
+        };
+
+        console.log(caseData);
+        
+    
+        caseData.crimeCategories.forEach(function(category) {
+
+            category.cases.forEach(function(data) {
+                console.log(data);
+                
+                L.marker([data.lat, data.lng]).addTo(map)
+                    .bindPopup('<b>' + data.city + '</b><br>Category: ' + category.category + '<br>Cases: ' + data.casesCount);
+            });
+        });
+    
+    </script>
+    
+</script><br>
+    <footer class="footer">
         <p>&copy; 2024 Legal Cases Website. All rights reserved.</p>
     </footer>
 </body>

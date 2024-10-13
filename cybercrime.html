@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case Statistics Tracker</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #333; 
+            color: white; 
+        }
+        canvas {
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Case Statistics Tracker by Region</h1>
+    
+    <h2>Total Cases Registered by Region</h2>
+    <canvas id="registeredChart" width="800" height="400"></canvas>
+
+    <h2>Total Cases Disposed by Region</h2>
+    <canvas id="disposedChart" width="800" height="400"></canvas>
+
+    <h2>Total Cases Pending by Region</h2>
+    <canvas id="pendingChart" width="800" height="400"></canvas>
+
+    <script>
+        const data = {
+            "Sheet1": [
+                { "Year": 2020, "State": "Delhi", "Total_Cases_Registered": 12000, "Total_Cases_Disposed": 10000, "Total_Cases_Pending": 2000 },
+                { "Year": 2020, "State": "Maharashtra", "Total_Cases_Registered": 15000, "Total_Cases_Disposed": 12000, "Total_Cases_Pending": 3000 },
+                { "Year": 2020, "State": "Karnataka", "Total_Cases_Registered": 8000, "Total_Cases_Disposed": 6000, "Total_Cases_Pending": 2000 },
+                { "Year": 2021, "State": "Delhi", "Total_Cases_Registered": 14000, "Total_Cases_Disposed": 11000, "Total_Cases_Pending": 3000 },
+                { "Year": 2021, "State": "Maharashtra", "Total_Cases_Registered": 16000, "Total_Cases_Disposed": 13000, "Total_Cases_Pending": 3000 },
+                { "Year": 2021, "State": "Karnataka", "Total_Cases_Registered": 9000, "Total_Cases_Disposed": 7000, "Total_Cases_Pending": 2000 },
+                { "Year": 2022, "State": "Delhi", "Total_Cases_Registered": 16000, "Total_Cases_Disposed": 13000, "Total_Cases_Pending": 3000 },
+                { "Year": 2022, "State": "Maharashtra", "Total_Cases_Registered": 18000, "Total_Cases_Disposed": 15000, "Total_Cases_Pending": 3000 },
+                { "Year": 2022, "State": "Karnataka", "Total_Cases_Registered": 10000, "Total_Cases_Disposed": 8000, "Total_Cases_Pending": 2000 },
+                { "Year": 2023, "State": "Delhi", "Total_Cases_Registered": 17000, "Total_Cases_Disposed": 14000, "Total_Cases_Pending": 3000 },
+                { "Year": 2023, "State": "Maharashtra", "Total_Cases_Registered": 19000, "Total_Cases_Disposed": 16000, "Total_Cases_Pending": 3000 },
+                { "Year": 2023, "State": "Karnataka", "Total_Cases_Registered": 11000, "Total_Cases_Disposed": 9000, "Total_Cases_Pending": 2000 }
+            ]
+        };
+
+        const regions = {
+            "North": ["Delhi"],
+            "West": ["Maharashtra"],
+            "South": ["Karnataka"]
+        };
+
+        const years = [...new Set(data.Sheet1.map(item => item.Year))];
+
+        const aggregateData = {};
+        for (const region in regions) {
+            aggregateData[region] = years.map(year => {
+                let totalRegistered = 0;
+                let totalDisposed = 0;
+                let totalPending = 0;
+
+                regions[region].forEach(state => {
+                    const record = data.Sheet1.find(item => item.Year === year && item.State === state);
+                    if (record) {
+                        totalRegistered += record.Total_Cases_Registered;
+                        totalDisposed += record.Total_Cases_Disposed;
+                        totalPending += record.Total_Cases_Pending;
+                    }
+                });
+
+                return {
+                    registered: totalRegistered,
+                    disposed: totalDisposed,
+                    pending: totalPending
+                };
+            });
+        }
+
+        const registeredData = {
+            labels: years,
+            datasets: Object.keys(regions).map(region => ({
+                label: `${region} - Registered`,
+                data: aggregateData[region].map(data => data.registered),
+                backgroundColor: 'rgba(75, 192, 192, 0.6)',
+            }))
+        };
+
+        const disposedData = {
+            labels: years,
+            datasets: Object.keys(regions).map(region => ({
+                label: `${region} - Disposed`,
+                data: aggregateData[region].map(data => data.disposed),
+                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+            }))
+        };
+
+        const pendingData = {
+            labels: years,
+            datasets: Object.keys(regions).map(region => ({
+                label: `${region} - Pending`,
+                data: aggregateData[region].map(data => data.pending),
+                backgroundColor: 'rgba(255, 99, 132, 0.6)',
+            }))
+        };
+
+        const registeredCtx = document.getElementById('registeredChart').getContext('2d');
+        const disposedCtx = document.getElementById('disposedChart').getContext('2d');
+        const pendingCtx = document.getElementById('pendingChart').getContext('2d');
+
+        new Chart(registeredCtx, {
+            type: 'bar',
+            data: registeredData,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            color: 'white', 
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Total Cases Registered by Region',
+                        color: 'white', 
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Number of Cases',
+                            color: 'white', 
+                        },
+                        ticks: {
+                            color: 'white', 
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: 'white', 
+                        }
+                    }
+                }
+            }
+        });
+
+        new Chart(disposedCtx, {
+            type: 'bar',
+            data: disposedData,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            color: 'white', 
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Total Cases Disposed by Region',
+                        color: 'white', 
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Number of Cases',
+                            color: 'white', 
+                        },
+                        ticks: {
+                            color: 'white', 
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: 'white', 
+                        }
+                    }
+                }
+            }
+        });
+
+        new Chart(pendingCtx, {
+            type: 'bar',
+            data: pendingData,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            color: 'white', 
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Total Cases Pending by Region',
+                        color: 'white', 
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Number of Cases',
+                            color: 'white', 
+                        },
+                        ticks: {
+                            color: 'white', 
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: 'white',
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

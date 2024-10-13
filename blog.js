@@ -1,15 +1,15 @@
 const blogPosts = [
     {
         title: "Understanding Section 66A",
-        author: "Jane Doe",
+        author: "Parul Sharma",
         content: "Section 66A of the Information Technology Act, 2000 was struck down by the Supreme Court in 2015...",
-        date: "2024-03-15"
+        date: "15/03/2024"
     },
     {
         title: "Recent Trends in Cybercrime",
-        author: "John Smith",
+        author: "Radhika Dodain",
         content: "In recent years, we've seen a significant increase in cybercrime cases...",
-        date: "2024-03-10"
+        date: "10/07/2024"
     }
 ];
 
