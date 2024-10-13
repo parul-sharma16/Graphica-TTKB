@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tracker-JusticeTracker</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="home.js"></script>
+</head>
+<body>
+    <nav class="nav-bar">
+        <!-- Same navigation as in index.html -->
+        <ul>
+            <li><a class="nav-bar" href="index.html">Home</a></li>
+            <li><a class="nav-bar" href="about.html">About</a></li>
+            <li><a class="nav-bar" href="methodology.html">Methodology</a></li>
+            <li><a class="nav-bar" href="tracker.html">Tracker</a></li>
+            <li><a class="nav-bar" href="reporting.html">Reporting</a></li>
+            <li><a class="nav-bar" href="blog.html">Blog</a></li>
+        </ul>
+    </nav>
+    <footer>
+        <p>&copy; 2024 Legal Cases Website. All rights reserved.</p>
+    </footer>
+</style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Legal Cases Dashboard</h1>
+            <select id="region-select">
+                <option value="India">India</option>
+                <option value="Maharashtra">Maharashtra</option>
+                <option value="Delhi">Delhi</option>
+            </select>
+        </div>
+        
+        <div class="pending-meter">
+            <div class="pending-meter-fill"></div>
+        </div>
+        <p>Pending cases: 236</p>
+        
+        <div class="alert">
+            In the graphs below, the dotted line shows the year 2015 when Supreme Court decision came in Shreya Singhal v Union of India (24th March 2015) declaring Sec 66A of the Information Technology Act,2000 as unconstitutional.
+        </div>
+        
+        <div class="chart-container">
+            <div class="chart">
+                <h3>Cases Registered (Year on Year)</h3>
+                <canvas id="registered-chart"></canvas>
+            </div>
+            <div class="chart">
+                <h3>Cases Disposed (Year on Year)</h3>
+                <canvas id="disposed-chart"></canvas>
+            </div>
+            <div class="chart">
+                <h3>Overall case pendency</h3>
+                <canvas id="pendency-chart"></canvas>
+            </div>
+            <div class="chart">
+                <h3>Percentage of cases pending from each year</h3>
+                <canvas id="percentage-chart"></canvas>
+            </div>
+        </div>
+        
+        <div class="chart">
+            <h3>Time taken (in years) by the courts to dispose a case</h3>
+            <p style="font-size: 24px; text-align: center; font-weight: bold;">5.6</p>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script>
+        const data = {
+            registered: [
+                { year: 2010, value: 50 },
+                { year: 2012, value: 100 },
+                { year: 2014, value: 200 },
+                { year: 2016, value: 350 },
+                { year: 2018, value: 300 },
+                { year: 2020, value: 34 },
+            ],
+            disposed: [
+                { year: 2010, value: 10 },
+                { year: 2012, value: 30 },
+                { year: 2014, value: 80 },
+                { year: 2016, value: 150 },
+                { year: 2018, value: 250 },
+                { year: 2020, value: 45 },
+            ],
+            pending: [
+                { year: 2010, value: 40 },
+                { year: 2012, value: 110 },
+                { year: 2014, value: 230 },
+                { year: 2016, value: 430 },
+                { year: 2018, value: 480 },
+                { year: 2020, value: 799 },
+            ],
+            percentagePending: [
+                { year: 2010, value: 10 },
+                { year: 2012, value: 20 },
+                { year: 2014, value: 30 },
+                { year: 2016, value: 40 },
+                { year: 2018, value: 50 },
+                { year: 2020, value: 58.8 },
+            ],
+        };
+
+        function createChart(canvasId, data, type = 'line') {
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            return new Chart(ctx, {
+                type: type,
+                data: {
+                    labels: data.map(item => item.year),
+                    datasets: [{
+                        label: 'Value',
+                        data: data.map(item => item.value),
+                        borderColor: 'rgb(75, 192, 192)',
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            createChart('registered-chart', data.registered);
+            createChart('disposed-chart', data.disposed);
+            createChart('pendency-chart', data.pending);
+            createChart('percentage-chart', data.percentagePending, 'bar');
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script src="tracker.js"></script>
+    <!-- Map Section with India Map -->
+<section id="map">
+    <div class="container">
+      <h2>Cases by Region - Interactive Map</h2>
+      <div id="mapid" style="height: 500px;"></div>
+    </div>
+  </section>
+  
+</body>
+</html>

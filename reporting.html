@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporting-JusticeTracker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="nav-bar">
+        <!-- Same navigation as in index.html -->
+        <ul>
+            <li><a class="nav-bar" href="index.html">Home</a></li>
+            <li><a class="nav-bar" href="about.html">About</a></li>
+            <li><a class="nav-bar" href="methodology.html">Methodology</a></li>
+            <li><a class="nav-bar" href="tracker.html">Tracker</a></li>
+            <li><a class="nav-bar" href="reporting.html">Reporting</a></li>
+            <li><a class="nav-bar" href="blog.html">Blog</a></li>
+        </ul>
+    </nav>
+    <main>
+        <h1>Report a Crime</h1>
+        <form id="crime-report-form">
+            <label for="crime-type">Type of Crime:</label>
+            <select id="crime-type" name="crime-type" required>
+                <option value="">Select a crime type</option>
+                <option value="theft">Theft</option>
+                <option value="assault">Assault</option>
+                <option value="fraud">Fraud</option>
+                <option value="other">Other</option>
+            </select>
+
+            <label for="date">Date of Incident:</label>
+            <input type="date" id="date" name="date" required>
+
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="location" required>
+
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" rows="4" required></textarea>
+
+            <button type="submit">Submit Report</button>
+        </form>
+    </main>
+    <footer>
+        <p>&copy; 2024 Legal Cases Website. All rights reserved.</p>
+    </footer>
+    <script src="reporting.js"></script>
+</body>
+</html>
