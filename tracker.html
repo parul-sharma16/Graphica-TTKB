@@ -3,9 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tracker-JusticeTracker</title>
+    <title>Tracker-</title>
     <link rel="stylesheet" href="styles.css">
     <script src="home.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 600px;
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
     <nav class="nav-bar">
@@ -19,12 +26,6 @@
             <li><a class="nav-bar" href="blog.html">Blog</a></li>
         </ul>
     </nav>
-    <footer>
-        <p>&copy; 2024 Legal Cases Website. All rights reserved.</p>
-    </footer>
-</style>
-</head>
-<body>
     <div class="container">
         <div class="header">
             <h1>Legal Cases Dashboard</h1>
@@ -34,7 +35,6 @@
                 <option value="Delhi">Delhi</option>
             </select>
         </div>
-        
         <div class="pending-meter">
             <div class="pending-meter-fill"></div>
         </div>
@@ -43,7 +43,7 @@
         <div class="alert">
             In the graphs below, the dotted line shows the year 2015 when Supreme Court decision came in Shreya Singhal v Union of India (24th March 2015) declaring Sec 66A of the Information Technology Act,2000 as unconstitutional.
         </div>
-        
+
         <div class="chart-container">
             <div class="chart">
                 <h3>Cases Registered (Year on Year)</h3>
@@ -139,13 +139,71 @@
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
     <script src="tracker.js"></script>
-    <!-- Map Section with India Map -->
-<section id="map">
-    <div class="container">
-      <h2>Cases by Region - Interactive Map</h2>
-      <div id="mapid" style="height: 500px;"></div>
-    </div>
-  </section>
-  
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        // Initialize the map
+        var map = L.map('map').setView([20.5937, 78.9629], 5); // Center on India
+    
+        // Add OpenStreetMap tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+        }).addTo(map);
+    
+        // Combined JSON data for cases
+        var caseData = {
+            "crimeCategories": [
+                {
+                    "category": "Cybercrime",
+                    "cases": [
+                        { "caseID": "CY001", "city": "Delhi", "casesCount": 50, "lat": 28.7041, "lng": 77.1025 },
+                        { "caseID": "CY002", "city": "Mumbai", "casesCount": 35, "lat": 19.0760, "lng": 72.8777 },
+                        { "caseID": "CY003", "city": "Bangalore", "casesCount": 22, "lat": 12.9716, "lng": 77.5946 },
+                        { "caseID": "CY004", "city": "Hyderabad", "casesCount": 15, "lat": 17.3850, "lng": 78.4867 }
+                    ]
+                },
+                {
+                    "category": "Fraud",
+                    "cases": [
+                        { "caseID": "FR001", "city": "Kolkata", "casesCount": 40, "lat": 22.5726, "lng": 88.3639 },
+                        { "caseID": "FR002", "city": "Chennai", "casesCount": 28, "lat": 13.0827, "lng": 80.2707 },
+                        { "caseID": "FR003", "city": "Ahmedabad", "casesCount": 20, "lat": 23.0225, "lng": 72.5714 },
+                        { "caseID": "FR004", "city": "Pune", "casesCount": 18, "lat": 18.5204, "lng": 73.8567 }
+                    ]
+                },
+                {
+                    "category": "Assault",
+                    "cases": [
+                        { "caseID": "AS001", "city": "Lucknow", "casesCount": 30, "lat": 26.8467, "lng": 80.9462 },
+                        { "caseID": "AS002", "city": "Jaipur", "casesCount": 25, "lat": 26.9124, "lng": 75.7873 },
+                        { "caseID": "AS003", "city": "Bhopal", "casesCount": 20, "lat": 23.2599, "lng": 77.4126 },
+                        { "caseID": "AS004", "city": "Patna", "casesCount": 10, "lat": 25.5941, "lng": 85.1376 }
+                    ]
+                },
+                {
+                    "category": "Theft",
+                    "cases": [
+                        { "caseID": "TH001", "city": "Surat", "casesCount": 15, "lat": 21.1702, "lng": 72.8311 },
+                        { "caseID": "TH002", "city": "Kanpur", "casesCount": 12, "lat": 26.4478, "lng": 80.3463 },
+                        { "caseID": "TH003", "city": "Nashik", "casesCount": 8, "lat": 19.9975, "lng": 73.7898 },
+                        { "caseID": "TH004", "city": "Visakhapatnam", "casesCount": 5, "lat": 17.6868, "lng": 83.2185 }
+                    ]
+                }
+            ]
+        };
+    
+        // Loop through each category and case
+        caseData.crimeCategories.forEach(function(category) {
+            category.cases.forEach(function(data) {
+                L.marker([data.lat, data.lng]).addTo(map)
+                    .bindPopup('<b>' + data.city + '</b><br>Category: ' + category.category + '<br>Cases: ' + data.casesCount);
+            });
+        });
+    
+    </script>
+    
+</script>
+     
 </body>
 </html>
