@@ -24,7 +24,7 @@ nav a {
 }
 .nav-bar{
     transition: color 0.3s ease;
-    font-size: large;
+    font-size: 20px;
 }
 .nav-bar:hover{
     color: rgb(162, 160, 160);
@@ -39,7 +39,7 @@ main {
     text-align: center;
     padding: 1rem;
     bottom: 0;
-    width: 100%;
+    width: 98%;
 }
 
 form {
@@ -125,7 +125,6 @@ body {
 canvas {
     max-width: 100%;
 }
-/* ABOUT  */
 #about {
     padding: 40px 0;
     background-color: #f9f9f9;
