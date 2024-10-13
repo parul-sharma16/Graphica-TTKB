@@ -24,6 +24,7 @@ nav a {
 }
 .nav-bar{
     transition: color 0.3s ease;
+    font-size: large;
 }
 .nav-bar:hover{
     color: rgb(162, 160, 160);
@@ -70,7 +71,6 @@ button:hover {
     background-color: #555;
 }
 
-/* Add any additional styles from the previous dashboard implementation */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -158,4 +158,10 @@ canvas {
     line-height: 1.8;
     margin-bottom: 20px;
   }
-  
+.about-img{
+    width: 100%;
+    height: 100%;
+}
+.footer{
+    height: 20px;
+}
